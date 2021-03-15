@@ -42,7 +42,7 @@ public class CivilizationFragment extends Fragment {
         // Initialize the ViewModel
 
         viewModel = new ViewModelProvider(this,
-                new CivilizationViewModelFactory(getActivity().getApplicationContext()))
+                new CivilizationViewModelFactory(getActivity().getApplication()))
                 .get(CivilizationViewModel.class);
 
         // call to fetch teh civilization details

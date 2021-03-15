@@ -1,6 +1,6 @@
 package com.example.empire.ui.civilization;
 
-import android.content.Context;
+import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -20,8 +20,8 @@ public class CivilizationViewModel extends ViewModel {
     private final CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<State> response = new MutableLiveData<>();
 
-    public CivilizationViewModel(Context context) {
-        repo = new CivilizationRepo(CivilizationDatabase.getInstance(context));
+    public CivilizationViewModel(Application application) {
+        repo = new CivilizationRepo(CivilizationDatabase.getInstance(application));
     }
 
     /**
