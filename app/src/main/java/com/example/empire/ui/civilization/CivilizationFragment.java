@@ -16,6 +16,7 @@ import com.example.empire.R;
 import com.example.empire.databinding.FragmentCivilizationBinding;
 import com.example.empire.ui.civilization.model.CivilizationModel;
 import com.example.empire.utils.State;
+import com.example.empire.utils.Utility;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class CivilizationFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(CivilizationViewModel.class);
 
         // call to fetch teh civilization details
-        viewModel.fetchCivilizationDetails();
+        viewModel.fetchCivilizationDetails(Utility.isNetworkAvailable(getContext()));
 
         // Observe for the civilization details data
         viewModel.civilizationDetails().observe(getViewLifecycleOwner(), new Observer<State>() {
@@ -57,6 +58,7 @@ public class CivilizationFragment extends Fragment {
 
     /**
      * Helper method to set the UI based on the State of the response for the Civilization details fetch
+     *
      * @param state
      */
     private void processCivilizationDetailsResponse(State state) {
@@ -84,6 +86,7 @@ public class CivilizationFragment extends Fragment {
 
     /**
      * Helper method to set the CivilizationAdapter
+     *
      * @param civilizationModelList
      */
     private void setUpCivilizationAdapter(List<CivilizationModel> civilizationModelList) {

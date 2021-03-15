@@ -28,17 +28,21 @@ public class CivilizationViewModel extends ViewModel {
 
     /**
      * Helper method to fetch Civilization Details and it's exposed to the Activity/Fragment
+     *
+     * @param isNetworkAvailable
      */
-    public void fetchCivilizationDetails() {
-        fetchCivilizationDetailsFromRepo();
+    public void fetchCivilizationDetails(boolean isNetworkAvailable) {
+        fetchCivilizationDetailsFromRepo(isNetworkAvailable);
     }
 
     /**
      * Helper method to fetch Civilization Details from the Model Layer.
      * It uses the Repository object.
+     *
+     * @param isNetworkAvailable
      */
-    private void fetchCivilizationDetailsFromRepo() {
-        disposable.add(repo.getCivilizationDetails()
+    private void fetchCivilizationDetailsFromRepo(boolean isNetworkAvailable) {
+        disposable.add(repo.getCivilizationDetails(isNetworkAvailable)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(__ -> response.setValue(State.loading()))

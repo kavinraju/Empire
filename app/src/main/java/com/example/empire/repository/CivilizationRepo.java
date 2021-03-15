@@ -37,13 +37,15 @@ public class CivilizationRepo {
     /**
      * Helper method that is used by the ViewModel to get the List<CivilizationModel> data as
      * Observable type so that it can subscribe.
+     *
+     * @param isNetworkAvailable
      * @return Observable<List < CivilizationModel>>
      */
-    public Observable<List<CivilizationModel>> getCivilizationDetails() {
+    public Observable<List<CivilizationModel>> getCivilizationDetails(boolean isNetworkAvailable) {
         // Check if network is available or not
         // If network is available fetch from API call else from local DB
         // TODO: Replace this condition check with actual network condition check
-        if (true) {
+        if (isNetworkAvailable) {
             // Return data from network API call
             return getCivilizationDetailsFromNetwork();
         } else {
