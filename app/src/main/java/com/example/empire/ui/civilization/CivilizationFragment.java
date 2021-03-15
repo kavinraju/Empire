@@ -48,6 +48,11 @@ public class CivilizationFragment extends Fragment {
         // call to fetch teh civilization details
         viewModel.fetchCivilizationDetails(Utility.isNetworkAvailable(getContext()));
 
+        // Set up network retry button OnClickListener
+        binding.btnRetry.setOnClickListener(v -> {
+            viewModel.fetchCivilizationDetails(Utility.isNetworkAvailable(getContext()));
+        });
+
         // Observe for the civilization details data
         viewModel.civilizationDetails().observe(getViewLifecycleOwner(), new Observer<State>() {
             @Override
@@ -58,6 +63,16 @@ public class CivilizationFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    /**
+     * Helper method to show the user that there's no network available
+     */
+    private void setNetworkErrorUI() {
+        binding.progressBarCivilization.setVisibility(View.GONE);
+        binding.recyclerViewCivilization.setVisibility(View.GONE);
+        binding.tvError.setText(R.string.network_error);
+        binding.llNetworkError.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -73,16 +88,19 @@ public class CivilizationFragment extends Fragment {
             case LOADING:
                 binding.progressBarCivilization.setVisibility(View.VISIBLE);
                 binding.recyclerViewCivilization.setVisibility(View.GONE);
+                binding.llNetworkError.setVisibility(View.GONE);
                 break;
             case SUCCESS:
                 binding.progressBarCivilization.setVisibility(View.GONE);
                 binding.recyclerViewCivilization.setVisibility(View.VISIBLE);
-
+                binding.llNetworkError.setVisibility(View.GONE);
                 setUpCivilizationAdapter((List<CivilizationModel>) state.data);
                 break;
             case FAILED:
                 binding.progressBarCivilization.setVisibility(View.GONE);
                 binding.recyclerViewCivilization.setVisibility(View.GONE);
+                binding.tvError.setText(R.string.error);
+                binding.llNetworkError.setVisibility(View.VISIBLE);
                 Log.d("processResponse", String.valueOf(state.error));
                 break;
         }
@@ -95,6 +113,13 @@ public class CivilizationFragment extends Fragment {
      */
     private void setUpCivilizationAdapter(List<CivilizationModel> civilizationModelList) {
         Log.d(LOG, "Size of data is " + civilizationModelList.size());
+
+        // Show Network Error UI only if network isn't available and also the data isn't available.
+        if (!Utility.isNetworkAvailable(getContext()) && civilizationModelList.size() == 0) {
+            setNetworkErrorUI();
+            return;
+        }
+
         CivilizationAdapter adapter = new CivilizationAdapter();
         binding.recyclerViewCivilization.setAdapter(adapter);
         adapter.submitList(civilizationModelList);
