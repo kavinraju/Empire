@@ -2,7 +2,7 @@ package com.example.empire.network.services;
 
 import com.example.empire.network.model.CivilizationListNetworkModel;
 
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 import retrofit2.http.GET;
 
 /**
@@ -11,6 +11,6 @@ import retrofit2.http.GET;
 public interface CivilizationAPIService {
 
     @GET("civilizations")
-    Single<CivilizationListNetworkModel> fetchCivilizationsDetails();
+    Flowable<CivilizationListNetworkModel> fetchCivilizationsDetails();
 
 }

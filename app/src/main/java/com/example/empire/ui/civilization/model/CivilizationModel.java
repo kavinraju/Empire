@@ -1,5 +1,6 @@
 package com.example.empire.ui.civilization.model;
 
+import com.example.empire.local_database.CivilizationEntry;
 import com.example.empire.network.model.CivilizationListNetworkModel;
 import com.example.empire.network.model.CivilizationNetworkModel;
 
@@ -94,12 +95,37 @@ public class CivilizationModel {
         this.civilizationBonus = civilizationBonus;
     }
 
+    /**
+     * Helper method to convert civilizationNetworkModelList, used in Network layer to
+     * List<CivilizationModel>, used in UI layer
+     *
+     * @param model
+     * @return
+     */
     public static List<CivilizationModel> fromCivilizationNetworkModel(CivilizationListNetworkModel model) {
         List<CivilizationModel> civilizationModelList = new ArrayList<>();
         for (CivilizationNetworkModel item : model.civilizationNetworkModelList) {
             civilizationModelList.add(
                     new CivilizationModel(item.id, item.name, item.expansion, item.armyType,
                             item.uniqueUnit, item.uniqueTech, item.teamBonus, item.civilizationBonus)
+            );
+        }
+        return civilizationModelList;
+    }
+
+    /**
+     * Helper method to convert List<CivilizationEntry>, used in Database layer to
+     * List<CivilizationModel>, used in UI layer
+     *
+     * @param civilizationEntryList
+     * @return
+     */
+    public static List<CivilizationModel> fromCivilizationDatabaseModel(List<CivilizationEntry> civilizationEntryList) {
+        List<CivilizationModel> civilizationModelList = new ArrayList<>();
+        for (CivilizationEntry item : civilizationEntryList) {
+            civilizationModelList.add(
+                    new CivilizationModel(item.getId(), item.getName(), item.getExpansion(), item.getArmyType(),
+                            item.getUniqueUnit(), item.getUniqueTech(), item.getTeamBonus(), item.getCivilizationBonus())
             );
         }
         return civilizationModelList;

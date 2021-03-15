@@ -1,9 +1,12 @@
 package com.example.empire.ui.civilization;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.empire.local_database.CivilizationDatabase;
 import com.example.empire.repository.CivilizationRepo;
 import com.example.empire.utils.State;
 
@@ -13,9 +16,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CivilizationViewModel extends ViewModel {
 
-    private CivilizationRepo repo = new CivilizationRepo();
+    private CivilizationRepo repo;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<State> response = new MutableLiveData<>();
+
+    public CivilizationViewModel(Context context) {
+        repo = new CivilizationRepo(CivilizationDatabase.getInstance(context));
+    }
 
     /**
      * Helper method which exposes the response, of type MutableLiveData<State> to the Activity/Fragment.

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -21,6 +20,8 @@ import com.example.empire.utils.Utility;
 import java.util.List;
 
 public class CivilizationFragment extends Fragment {
+
+    private static final String LOG = CivilizationFragment.class.getSimpleName();
 
     private FragmentCivilizationBinding binding;
     private CivilizationViewModel viewModel;
@@ -39,7 +40,10 @@ public class CivilizationFragment extends Fragment {
         binding.setLifecycleOwner(this);
 
         // Initialize the ViewModel
-        viewModel = new ViewModelProvider(this).get(CivilizationViewModel.class);
+
+        viewModel = new ViewModelProvider(this,
+                new CivilizationViewModelFactory(getActivity().getApplicationContext()))
+                .get(CivilizationViewModel.class);
 
         // call to fetch teh civilization details
         viewModel.fetchCivilizationDetails(Utility.isNetworkAvailable(getContext()));
@@ -63,7 +67,7 @@ public class CivilizationFragment extends Fragment {
      */
     private void processCivilizationDetailsResponse(State state) {
 
-        Log.d("processResponse", String.valueOf(state.status));
+        Log.d(LOG, String.valueOf(state.status));
 
         switch (state.status) {
             case LOADING:
@@ -90,6 +94,7 @@ public class CivilizationFragment extends Fragment {
      * @param civilizationModelList
      */
     private void setUpCivilizationAdapter(List<CivilizationModel> civilizationModelList) {
+        Log.d(LOG, "Size of data is " + civilizationModelList.size());
         CivilizationAdapter adapter = new CivilizationAdapter();
         binding.recyclerViewCivilization.setAdapter(adapter);
         adapter.submitList(civilizationModelList);
