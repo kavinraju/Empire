@@ -14,11 +14,20 @@ public class APIClient {
     private static Retrofit retrofit = null;
     private static OkHttpClient okHttpClient = null;
 
+    /**
+     * Helper method to get the Retrofit object. This method initializes OkHttpClient object when
+     * its called for the first client.
+     * Retrofit uses MoshiConverterFactory to convert JSON type to Java Object
+     * @return Retrofit
+     */
     public static Retrofit getClient() {
+
+        // Check for OkHttpClient object nullability
         if (okHttpClient == null) {
             initializeOkHttpClient();
         }
 
+        // Check for retrofit object nullability
         if (retrofit == null) {
             Moshi moshi = new Moshi.Builder().build();
 
@@ -33,6 +42,9 @@ public class APIClient {
         return retrofit;
     }
 
+    /**
+     * Helper method to initialize OkHttpClient
+     */
     private static void initializeOkHttpClient() {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
